@@ -1,0 +1,24 @@
+{
+    "name": "kenirwin/wiki-research-estimator",
+    "description": "Estimates researchability of potential Wikipedia topics",
+    "type": "project",
+    "autoload": {
+        "classmap": [
+            "src/"
+        ]
+    },
+    "require": {
+        "nategood/httpful": "^0.2.20",
+        "sunra/php-simple-html-dom-parser": "^1.5"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.1"
+    },
+    "license": "GPL 3.0",
+    "authors": [
+        {
+            "name": "Ken Irwin",
+            "email": "kirwin@wittenberg.edu"
+        }
+    ]
+}
