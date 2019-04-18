@@ -2,6 +2,8 @@
 
 namespace WikiResearch;
 
+use nategood\Httpful;
+
 /*
   usage: 
   $this->query();
@@ -16,9 +18,16 @@ class Estimator {
         $this->queryString = urlencode($plaintext);
     }
 
-    public function fetch() {
+    public function fetch($uri) {
         //fetch an XML page using Httpful
         //define $this->response
+        $this->response = \Httpful\Request::get($uri)
+                  ->expectsXml()
+                  ->send();
+    }
+
+    public function loadXmlFromFile() {
+
     }
     
     public function getFacets() {
