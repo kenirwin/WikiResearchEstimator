@@ -24,12 +24,10 @@ class EstimatorTest extends TestCase {
         $this->assertEquals('Httpful\Response',get_class($this->est->response));
     }
 
-    public function testLoadsXmlFromFile() {
-        
-    }
-
     public function testGetsFacetsFromXML () {
-        //        $this->est
+        $this->est->fetch($this->testfile);
+        $this->est->getFacets();
+        $this->assertIsArray($this->est->facets);
     }
 
 }

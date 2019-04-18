@@ -26,12 +26,8 @@ class Estimator {
                   ->send();
     }
 
-    public function loadXmlFromFile() {
-
-    }
-    
     public function getFacets() {
-        //$this->facets = array ('books'=>$count, 'articles'=>$count)
+        
     }
 
     public function calculate() {
