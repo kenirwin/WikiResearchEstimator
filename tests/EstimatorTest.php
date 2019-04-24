@@ -40,5 +40,14 @@ class EstimatorTest extends TestCase {
         $this->assertFalse(array_key_exists('Cuneiform Tablets',$this->est->facets));;
     }
 
+
+    /* 
+       Upcoming challenges:
+       * weeding out dumb "SmartSearch" results -- is there a param for that?
+       * calculating scores
+       * Aida Boni vs. "Aida Boni" vs. ("Aida Boni" and (dance or choreograph*))
+       * handling foreign characters -- easy? hard? 
+       */
+
 }
 ?>
