@@ -8,7 +8,8 @@ use Sabre\Xml\Reader;
 /*
   usage: 
   $this->query();
-  $this->fetch();
+  $this->fetch($uri);
+  $this->loadXmlObject();
   $this->getFacets();
   $this->calculate();
 */
