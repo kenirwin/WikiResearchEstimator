@@ -11,11 +11,22 @@ class Harvester {
     }
 
     function getNext() {
-        
+        $this->initializeQuery();
+        $next = $this->q->table('wd_choreographers')
+              ->field('name')
+              ->where('eds_exported',null)
+              ->order('name','asc')
+              ->get();
+        //        return $this->q->render();
+        return $next[0]['name'];
     }
 
-    function recordGotten($id) {
-
+    function updateTable($id) {
+        $this->initializeQuery();
+        $this->q->table('wd_choreographers')
+            ->where('id',$id)
+            ->set('eds_exported','Y')
+            ->update();
     }
 
     public function initializeQuery() {

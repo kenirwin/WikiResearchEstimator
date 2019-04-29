@@ -43,6 +43,26 @@ class HarvesterTest extends TestCase {
             sizeof($data)
         );
     }
+    public function testGetNext() {
+        $next = $this->db->getNext();
+        $this->assertEquals(
+            'A G Cecilia (Cissi) Olsson',
+            $next
+        );
+    }
+    public function testUpdateTable() {
+        $id = 1; 
+        $this->db->updateTable($id);
+        $this->db->initializeQuery();
+        $r = $this->db->q->table('wd_choreographers')
+            ->field('eds_exported')
+           ->where('id',$id)
+            ->get();
+        $this->assertEquals(
+            'Y',
+            $r[0]['eds_exported']
+        );
+    }
 
     private function initializeQuery() {
         $this->db->q = $this->db->dsql(); //new Query();
