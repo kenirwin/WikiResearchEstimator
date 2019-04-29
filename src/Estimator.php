@@ -3,11 +3,13 @@
 namespace WikiResearch;
 
 use nategood\Httpful;
+use Sabre\Xml\Reader;
 
 /*
   usage: 
   $this->query();
-  $this->fetch();
+  $this->fetch($uri);
+  $this->loadXmlObject();
   $this->getFacets();
   $this->calculate();
 */
@@ -26,12 +28,24 @@ class Estimator {
                   ->send();
     }
 
-    public function loadXmlFromFile() {
-
+    public function loadXmlObject () {
+        $xml_string = $this->response;
+        // Gets rid of all namespace definitions
+        $xml_string = preg_replace('/xmlns[^=]*="[^"]*"/i', '', $xml_string);
+        // Gets rid of all namespace references
+        $xml_string = preg_replace('/[a-zA-Z]+:([a-zA-Z]+[=>])/', '$1', $xml_string);
+        $this->xml = simplexml_load_string($xml_string);
     }
-    
+
     public function getFacets() {
-        //$this->facets = array ('books'=>$count, 'articles'=>$count)
+        $xpath = ('//*[text()="SourceType"]/..//AvailableFacetValue');
+        $node = $this->xml->xpath($xpath);
+        $this->facets = array();
+        foreach ($node as $f) {
+            $k = (string) $f->Value;
+            $v = (string) $f->Count;
+            $this->facets[$k] = $v;
+        } 
     }
 
     public function calculate() {
