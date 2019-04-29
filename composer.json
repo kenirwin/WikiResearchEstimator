@@ -4,10 +4,11 @@
     "type": "project",
     "require": {
         "nategood/httpful": "^0.2.20",
-        "sunra/php-simple-html-dom-parser": "^1.5"
+        "sunra/php-simple-html-dom-parser": "^1.5",
+        "atk4/dsql": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.1"
+        "phpunit/phpunit": "*"
     },
     "autoload": {
         "psr-4": { 
