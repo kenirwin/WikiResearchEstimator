@@ -33,6 +33,7 @@ class Estimator {
         $this->response = \Httpful\Request::get($uri)
                   ->expectsXml()
                   ->send();
+	$this->raw_xml = $this->response->raw_body;
     }
 
     public function loadXmlObject () {

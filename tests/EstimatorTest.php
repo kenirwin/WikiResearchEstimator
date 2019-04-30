@@ -31,6 +31,7 @@ class EstimatorTest extends TestCase {
         $this->est->fetch($this->testfile);
         $this->est->loadXmlObject();
         $this->assertEquals('SimpleXMLElement', get_class($this->est->xml));
+	$this->assertRegExp('/^<SearchResponseMessageGet/',$this->est->raw_xml);
     }
 
     public function testGetsFacetsFromXML () {
