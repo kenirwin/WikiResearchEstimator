@@ -53,8 +53,13 @@ class HarvesterTest extends TestCase {
         $next = $this->db->getNext();
         $this->assertEquals(
             'A G Cecilia (Cissi) Olsson',
-            $next
+            $next['name']
         );
+        $this->assertEquals(
+            1,
+            $next['id']
+        );
+
     }
     public function testUpdateTable() {
         $id = 1; 

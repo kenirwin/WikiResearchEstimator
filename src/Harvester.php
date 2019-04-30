@@ -13,12 +13,12 @@ class Harvester {
     function getNext() {
         $this->initializeQuery();
         $next = $this->q->table('wd_choreographers')
-              ->field('name')
+              ->field('name,id')
               ->where('eds_exported',null)
               ->order('name','asc')
               ->get();
         //        return $this->q->render();
-        return $next[0]['name'];
+        return $next[0];
     }
 
     function updateTable($id) {
