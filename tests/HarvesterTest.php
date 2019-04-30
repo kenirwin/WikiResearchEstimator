@@ -18,6 +18,7 @@ class HarvesterTest extends TestCase {
     $this->createTable();
     $this->populateTable();
     $this->x = 1+1;
+    $this->xml = file_get_contents('tests/demo_results_terminal_velocity.xml'); 
   }
 
   public function testMath() {
@@ -63,16 +64,18 @@ class HarvesterTest extends TestCase {
     }
     public function testUpdateTable() {
         $id = 1; 
-        $this->db->updateTable($id);
+        $this->db->updateTable($id,$this->xml);
         $this->db->initializeQuery();
         $r = $this->db->q->table('wd_choreographers')
-            ->field('eds_exported')
-           ->where('id',$id)
-            ->get();
+	  ->field('eds_exported,eds_xml')
+	  ->where('id',$id)
+	  ->get();
         $this->assertEquals(
             'Y',
             $r[0]['eds_exported']
         );
+	$this->assertRegExp('/^<SearchResponseMessageGet/',$r[0]['eds_xml']);
+	$this->assertRegExp('/<\/SearchResponseMessageGet>$/',$r[0]['eds_xml']);
     }
 
     private function initializeQuery() {
@@ -94,6 +97,7 @@ class HarvesterTest extends TestCase {
             `wikidata_item` varchar(9) DEFAULT NULL,
             `site_links` int(11) DEFAULT NULL,
             `eds_exported` char(1) DEFAULT NULL,
+            `eds_xml` longtext DEFAULT NULL,
             PRIMARY KEY (`id`)
         )";
         $this->db->q->Expr($query)->execute($this->db->c);

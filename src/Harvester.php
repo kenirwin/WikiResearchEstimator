@@ -21,11 +21,12 @@ class Harvester {
         return $next[0];
     }
 
-    function updateTable($id) {
+    function updateTable($id,$xml) {
         $this->initializeQuery();
         $this->q->table('wd_choreographers')
             ->where('id',$id)
             ->set('eds_exported','Y')
+	  ->set('eds_xml',$xml)
             ->update();
     }
 
