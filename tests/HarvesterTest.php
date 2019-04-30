@@ -1,6 +1,11 @@
 <?php
+ini_set('display_errors', 1); 
+ini_set('display_startup_errors', 1); 
+error_reporting(E_ALL);
+
 namespace WikiResearch\Test;
 
+include 'setVerboseErrorHandler.php';
 require dirname( dirname(__FILE__) ) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 use PHPUnit\Framework\TestCase;
 use WikiResearch\Harvester;
@@ -12,10 +17,16 @@ define ('PASS',null);
 //require dirname( dirname(__FILE__) ) . DIRECTORY_SEPARATOR . 'config.php';
 
 class HarvesterTest extends TestCase {
-    public function setUp () {
-        $this->db = new Harvester();
-        $this->createTable();
-        $this->populateTable();
+  public function testMath() {
+    $x = 1+1;
+    $this->expectEquals(2,$x);
+  }
+  /*
+  public function setUp () {
+    setVerboseErrorHandler();  
+      $this->db = new Harvester();
+      $this->createTable();
+      $this->populateTable();
     }
 
     public function testConnectByAtk () {
@@ -63,7 +74,7 @@ class HarvesterTest extends TestCase {
             $r[0]['eds_exported']
         );
     }
-
+  */
     private function initializeQuery() {
         $this->db->q = $this->db->dsql(); //new Query();
     }
