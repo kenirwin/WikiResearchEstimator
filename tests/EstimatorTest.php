@@ -18,12 +18,15 @@ class EstimatorTest extends TestCase {
         $expected = 'search%3Fquery%3Dterminal+velocity%26view%3Ddetailed%26resultsperpage%3D10';
         $this->assertEquals($expected, $this->est->queryString);
     }
-
+    public function testCreatesFilename () {
+      $name = 'A G Cecilia (Cissi) Olsson';
+      $filename = $this->est->getFilename($name);
+      $this->assertEquals('a_g_cecilia_cissi_olsson',$filename);
+    }
     public function testInstantiatesHttpful() {
         $this->est->fetch($this->testfile);
         $this->assertEquals('Httpful\Response',get_class($this->est->response));
     }
-
     public function testLoadsXml () {
         $this->est->fetch($this->testfile);
         $this->est->loadXmlObject();

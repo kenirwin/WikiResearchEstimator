@@ -20,6 +20,13 @@ class Estimator {
         $this->queryString = urlencode($plaintext);
     }
 
+    public function getFilename($input) {
+      $filename = preg_replace('/[^A-Za-z0-9]+/','_',strtolower(chop($input)));
+      $filename = preg_replace('/^_/','',$filename);
+      $filename = preg_replace('/_$/','',$filename);
+      return $filename;
+    }
+
     public function fetch($uri) {
         //fetch an XML page using Httpful
         //define $this->response
