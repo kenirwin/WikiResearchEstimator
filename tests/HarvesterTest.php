@@ -1,11 +1,6 @@
 <?php
-ini_set('display_errors', 1); 
-ini_set('display_startup_errors', 1); 
-error_reporting(E_ALL);
-
 namespace WikiResearch\Test;
 
-include 'setVerboseErrorHandler.php';
 require dirname( dirname(__FILE__) ) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 use PHPUnit\Framework\TestCase;
 use WikiResearch\Harvester;
@@ -14,26 +9,26 @@ define ('DSN','sqlite::memory:');
 define ('USER',null);
 define ('PASS',null);
 
-//require dirname( dirname(__FILE__) ) . DIRECTORY_SEPARATOR . 'config.php';
+require dirname( dirname(__FILE__) ) . DIRECTORY_SEPARATOR . 'config.php';
 
 class HarvesterTest extends TestCase {
-  public function testMath() {
-    $x = 1+1;
-    $this->expectEquals(2,$x);
+  protected function setUp(): void 
+  {
+    $this->db = new Harvester();
+    $this->createTable();
+    $this->populateTable();
+    $this->x = 1+1;
   }
-  /*
-  public function setUp () {
-    setVerboseErrorHandler();  
-      $this->db = new Harvester();
-      $this->createTable();
-      $this->populateTable();
-    }
+
+  public function testMath() {
+    $this->assertEquals(2,$this->x);
+  }
 
     public function testConnectByAtk () {
-        $this->assertInternalType(
-            'object',
-            $this->db->c,
-            'this->db->c should be an object'
+      $cType = get_class($this->db->c);
+      $this->assertTrue(
+			is_object($this->db->c),
+			'this->db->c should be an object'
         );
         $this->assertEquals(
             'atk4\dsql\Connection',
@@ -74,7 +69,7 @@ class HarvesterTest extends TestCase {
             $r[0]['eds_exported']
         );
     }
-  */
+
     private function initializeQuery() {
         $this->db->q = $this->db->dsql(); //new Query();
     }
@@ -112,3 +107,4 @@ class HarvesterTest extends TestCase {
         }
     }
 }
+
