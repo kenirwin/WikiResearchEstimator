@@ -4,6 +4,7 @@ namespace WikiResearch;
 
 use nategood\Httpful;
 use Sabre\Xml\Reader;
+use voku\helper\UTF8;
 
 /*
   usage: 
@@ -21,9 +22,11 @@ class Estimator {
     }
 
     public function getFilename($input) {
-      $filename = preg_replace('/[^A-Za-z0-9]+/','_',strtolower(chop($input)));
+      $filename = UTF8::to_ascii($input);
+      $filename = preg_replace('/[^A-Za-z0-9]+/','_',strtolower(chop($filename)));
       $filename = preg_replace('/^_/','',$filename);
       $filename = preg_replace('/_$/','',$filename);
+      $filename .= '.xml';
       return $filename;
     }
 

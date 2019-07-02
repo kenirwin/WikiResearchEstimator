@@ -5,7 +5,8 @@
     "require": {
         "nategood/httpful": "^0.2.20",
         "sunra/php-simple-html-dom-parser": "^1.5",
-        "atk4/dsql": "*"
+        "atk4/dsql": "*",
+        "voku/portable-utf8": "^5.4"
     },
     "require-dev": {
         "phpunit/phpunit": "*"
