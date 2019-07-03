@@ -9,18 +9,42 @@ class Harvester {
         $this->c = \atk4\dsql\Connection::connect(DSN,USER,PASS);
         $this->initializeQuery();
     }
-
-    function getNext() {
-        $this->initializeQuery();
-        $next = $this->q->table('wd_choreographers')
-              ->field('name,id')
-              ->where('eds_exported',null)
-              ->order('name','asc')
-              ->get();
-        //        return $this->q->render();
-        return $next[0];
+    
+    public function getBatch() {
+      $this->initializeQuery();
+      try { 
+      $current = $this->q->table('query_batches')
+	->field('id')
+	->order('id','desc')
+	->getOne();
+      return $current;
+      } catch (Exception $e) {
+	print $e->getMessage();
+      }
     }
 
+    function getNext($batch) {
+      $sub_q = $this->c->dsql();
+      $sub_q->table('xml_results')
+	->field('choreo_id')
+	->where('batch_id',$batch);
+
+      $this->initializeQuery();
+      try { 
+	$this->q->table('wd_choreographers')
+	  ->field('name,id')
+	  ->where('id','not in',$sub_q)
+	  ->order('name','asc');
+	$this->q->render();
+
+	$next = $this->q->get();
+        return $next[0];
+      } catch (Exception $e) {
+	print $e->getMessage();
+      }
+    }
+
+    /*
     function updateTable($id,$xml) {
         $this->initializeQuery();
         $this->q->table('wd_choreographers')
@@ -29,12 +53,24 @@ class Harvester {
 	  ->set('eds_xml',$xml)
 	  ->update();
     }
+    */
 
-    public function recordResults($id,$query,$facets) {
+    public function saveXML($choreo_id,$batch_id,$query,$xml) {
+      $this->initializeQuery();
+      	$response = $this->q->table('xml_results')
+	  ->set('choreo_id',$choreo_id)
+	  ->set('batch_id',$batch_id)
+	  ->set('query',$query)
+	  ->set('xml_results',$xml)
+	  ->insert();
+    }
+
+    public function recordResults($id,$batch,$query,$facets) {
       foreach ($facets as $type=>$ct) {
 	$this->initializeQuery();
 	$response = $this->q->table('query_results')
 	  ->set('choreo_id',$id)
+	  ->set('batch_id',$batch)
 	  ->set('query',$query)
 	  ->set('source_type',$type)
 	  ->set('count',$ct)

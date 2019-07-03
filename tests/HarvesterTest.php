@@ -51,7 +51,8 @@ class HarvesterTest extends TestCase {
         );
     }
     public function testGetNext() {
-        $next = $this->db->getNext();
+      $batch = 1; 
+        $next = $this->db->getNext($batch);
         $this->assertEquals(
             'A G Cecilia (Cissi) Olsson',
             $next['name']
@@ -62,6 +63,8 @@ class HarvesterTest extends TestCase {
         );
 
     }
+
+    /*
     public function testUpdateTable() {
         $id = 1; 
         $this->db->updateTable($id,$this->xml);
@@ -77,6 +80,7 @@ class HarvesterTest extends TestCase {
 	$this->assertRegExp('/^<SearchResponseMessageGet/',$r[0]['eds_xml']);
 	$this->assertRegExp('/<\/SearchResponseMessageGet>$/',$r[0]['eds_xml']);
     }
+    */
 
     private function initializeQuery() {
         $this->db->q = $this->db->dsql(); //new Query();
@@ -100,6 +104,28 @@ class HarvesterTest extends TestCase {
             `eds_xml` longtext DEFAULT NULL,
             PRIMARY KEY (`id`)
         )";
+        $this->db->q->Expr($query)->execute($this->db->c);
+
+	$query = "CREATE TABLE `xml_results` (
+`id` int(11) NOT NULL,
+`batch_id` int(11) NOT NULL,
+`choreo_id` int(11) NOT NULL,
+`query` varchar(255) NOT NULL,
+`xml_results` blob NOT NULL,
+PRIMARY KEY (`id`)
+)";
+	$this->db->initializeQuery();
+        $this->db->q->Expr($query)->execute($this->db->c);
+
+$query = "CREATE TABLE `query_results` (
+  `id` int(11) NOT NULL,
+  `choreo_id` int(11) NOT NULL,
+  `query` varchar(255) NOT NULL,
+  `source_type` varchar(255) NOT NULL,
+  `count` int(11) NOT NULL
+)";
+
+	$this->db->initializeQuery();
         $this->db->q->Expr($query)->execute($this->db->c);
     }
 
