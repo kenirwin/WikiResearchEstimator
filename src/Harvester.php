@@ -24,10 +24,23 @@ class Harvester {
     function updateTable($id,$xml) {
         $this->initializeQuery();
         $this->q->table('wd_choreographers')
-            ->where('id',$id)
-            ->set('eds_exported','Y')
+	  ->where('id',$id)
+	  ->set('eds_exported','Y')
 	  ->set('eds_xml',$xml)
-            ->update();
+	  ->update();
+    }
+
+    public function recordResults($id,$query,$facets) {
+      foreach ($facets as $type=>$ct) {
+	$this->initializeQuery();
+	$response = $this->q->table('query_results')
+	  ->set('choreo_id',$id)
+	  ->set('query',$query)
+	  ->set('source_type',$type)
+	  ->set('count',$ct)
+	  ->insert();
+      }
+      return $response;
     }
 
     public function initializeQuery() {
